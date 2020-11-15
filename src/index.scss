@@ -1,0 +1,22 @@
+/*!
+ * CSS-Kit (https://github.com/sfmntmzzn/css-kit)
+ * Copyright 2020 @sfmntmzzn
+ * Licensed under MIT (https://github.com/sfmntmzzn/css-kit/blob/main/LICENSE)
+ */
+
+/**
+ *
+ */
+@use 'reset';
+
+/**
+ *
+ */
+@mixin rules {
+
+  // Create reset rules
+  @include reset.rules;
+}
+
+// Create all rules
+@include rules;

@@ -1,0 +1,27 @@
+
+@mixin rules {
+
+  /**
+   * 1. Inherit the box sizing strategie.
+   *    A default will be set on the <html/> element.
+   */
+  *,
+  ::before,
+  ::after {
+    /* 1 */ box-sizing: inherit;
+  }
+
+  /**
+   * 1. Set the default box-sizing strategie, so they can be inherited.
+   */
+  html {
+    /* 1 */ box-sizing: border-box;
+  }
+
+  /**
+   * 1. Remove the body margin applied by all browsers.
+   */
+  body {
+    /* 1 */ margin: 0;
+  }
+}
