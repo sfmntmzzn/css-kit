@@ -9,6 +9,14 @@
     "url": "https://github.com/sfmntmzzn/css-kit.git",
     "type": "git"
   },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ],
+  "main": "dist/css-kit.css",
   "scripts": {
     "build:clean": "rimraf ./dist",
     "build:compile:debug": "sass ./src/index.scss --embed-source-map | replace 'data:application/json;charset=utf-8,' 'data:application/json,' -z",
@@ -17,13 +25,6 @@
     "build:stats": "dist-size ./dist",
     "build": "yarn build:clean && yarn build:compile && yarn build:minify && yarn build:stats"
   },
-  "files": [
-    "dist",
-    "src",
-    "LICENSE",
-    "README.md",
-    "package.json"
-  ],
   "devDependencies": {
     "cssnano": "^4.1.10",
     "cssnano-preset-advanced": "^4.0.7",
