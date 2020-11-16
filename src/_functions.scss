@@ -1,0 +1,23 @@
+@use 'sass:math';
+
+/**
+ *
+ */
+@function add($left, $right) {
+  @if math.compatible($left, $right) {
+    @return $left + $right;
+  } @else {
+    @return calc(#{$left} + #{$right});
+  }
+}
+
+/**
+ *
+ */
+@function subtract($left, $right) {
+  @if math.compatible($left, $right) {
+    @return $left - $right;
+  } @else {
+    @return calc(#{$left} - #{$right});
+  }
+}
