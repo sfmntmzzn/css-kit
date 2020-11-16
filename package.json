@@ -16,7 +16,8 @@
     "README.md",
     "package.json"
   ],
-  "main": "dist/css-kit.css",
+  "style": "dist/css-kit.css",
+  "sass": "src/index.scss",
   "scripts": {
     "build:clean": "rimraf ./dist",
     "build:compile:debug": "sass ./src/index.scss --embed-source-map | replace 'data:application/json;charset=utf-8,' 'data:application/json,' -z",
