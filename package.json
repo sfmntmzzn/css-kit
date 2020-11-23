@@ -19,7 +19,7 @@
   "style": "dist/css-kit.css",
   "sass": "src/index.scss",
   "scripts": {
-    "build:clean": "rimraf ./dist/*.css ./dist/*.css.map",
+    "build:clean": "rimraf ./dist/",
     "build:compile:main": "sass ./src/index.scss ./dist/css-kit.css --style=expanded",
     "build:compile:min": "sass ./src/index.scss ./dist/css-kit.min.css --style=compressed",
     "build:stats": "dist-size ./dist -e css",
