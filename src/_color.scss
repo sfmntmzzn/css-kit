@@ -2,7 +2,13 @@
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:meta';
+@use 'utils';
 @use 'variables';
+
+$-css-var-suffix-hue: 'h';
+$-css-var-suffix-saturation: 's';
+$-css-var-suffix-lightness: 'l';
+$-css-var-suffix-alpha: 'a';
 
 /// Returns the `var(...)' color expression for the
 /// hue channel of a defined named color.
@@ -10,7 +16,7 @@
 /// @param {string} $name The name of the color.
 /// @returns The custom variable expression.
 @function read-color-hue($name) {
-  @return var(--#{$name}-h);
+  @return var(#{utils.css-var($name: $name, $suffix: $-css-var-suffix-hue)});
 }
 
 /// Returns the `var(...)' color expression for the
@@ -19,7 +25,7 @@
 /// @param {string} $name The name of the color.
 /// @returns The custom variable expression.
 @function read-color-saturation($name) {
-  @return var(--#{$name}-s);
+  @return var(#{utils.css-var($name: $name, $suffix: $-css-var-suffix-saturation)});
 }
 
 /// Returns the `var(...)' color expression for the
@@ -28,7 +34,7 @@
 /// @param {string} $name The name of the color.
 /// @returns The custom variable expression.
 @function read-color-lightness($name) {
-  @return var(--#{$name}-l);
+  @return var(#{utils.css-var($name: $name, $suffix: $-css-var-suffix-lightness)});
 }
 
 /// Returns the `var(...)' color expression for the
@@ -37,7 +43,7 @@
 /// @param {string} $name The name of the color.
 /// @returns The custom variable expression.
 @function read-color-alpha($name) {
-  @return var(--#{$name}-a);
+  @return var(#{utils.css-var($name: $name, $suffix: $-css-var-suffix-alpha)});
 }
 
 /// Returns the `hsl(...)' color expression for a
@@ -79,15 +85,15 @@
     @error "Parameter $name has unsupported type '#{meta.type-of($name)}'";
   }
   @if meta.type-of($color) == color {
-    --#{$name}-h: #{color.hue($color)};
-    --#{$name}-s: #{color.saturation($color)};
-    --#{$name}-l: #{color.lightness($color)};
-    --#{$name}-a: #{color.alpha($color)};
+    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-hue)}: #{color.hue($color)};
+    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-saturation)}: #{color.saturation($color)};
+    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-lightness)}: #{color.lightness($color)};
+    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-alpha)}: #{color.alpha($color)};
   } @else if meta.type-of($color) == string {
-    --#{$name}-h: #{read-color-hue($name: $color)};
-    --#{$name}-s: #{read-color-saturation($name: $color)};
-    --#{$name}-l: #{read-color-lightness($name: $color)};
-    --#{$name}-a: #{read-color-alpha($name: $color)};
+    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-hue)}: #{read-color-hue($name: $color)};
+    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-saturation)}: #{read-color-saturation($name: $color)};
+    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-lightness)}: #{read-color-lightness($name: $color)};
+    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-alpha)}: #{read-color-alpha($name: $color)};
   } @else {
     @error "Parameter $color has unsupported type '#{meta.type-of($color)}'";
   }

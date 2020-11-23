@@ -1,4 +1,32 @@
 @use 'sass:math';
+@use 'sass:string';
+@use 'variables';
+
+/// Generated the name for a variables as acustom
+/// CSS property.
+///
+/// @param {string} $name
+///   The base name for the variable.
+/// @param {string} $prefix
+///   A optional prefix for the variable name.
+/// @param {string} $suffix
+///   A optional suffix for the variable name.
+/// @returns {string}
+///   The generated variable name.
+@function css-var($name, $prefix: '', $suffix: '') {
+  $result: $name;
+  @if string.length($prefix) >= 1 {
+    $result: #{$prefix}-#{$result};
+  }
+  @if string.length($suffix) >= 1 {
+    $result: #{$result}-#{$suffix};
+  }
+  @if string.length(variables.$css-var-namespace) >= 1 {
+    @return --#{variables.$css-var-namespace}-#{$result};
+  } @else {
+    @return --#{$result};
+  }
+}
 
 /// Adds two values together, or generates a `calc(...)'
 /// expression if the units dont match.
