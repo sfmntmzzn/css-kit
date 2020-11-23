@@ -1,0 +1,109 @@
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+@use 'variables';
+
+/// Returns the `var(...)' color expression for the
+/// hue channel of a defined named color.
+///
+/// @param {string} $name The name of the color.
+/// @returns The custom variable expression.
+@function read-color-hue($name) {
+  @return var(--#{$name}-h);
+}
+
+/// Returns the `var(...)' color expression for the
+/// saturation channel of a defined named color.
+///
+/// @param {string} $name The name of the color.
+/// @returns The custom variable expression.
+@function read-color-saturation($name) {
+  @return var(--#{$name}-s);
+}
+
+/// Returns the `var(...)' color expression for the
+/// lightness channel of a defined named color.
+///
+/// @param {string} $name The name of the color.
+/// @returns The custom variable expression.
+@function read-color-lightness($name) {
+  @return var(--#{$name}-l);
+}
+
+/// Returns the `var(...)' color expression for the
+/// alpha channel of a defined named color.
+///
+/// @param {string} $name The name of the color.
+/// @returns The custom variable expression.
+@function read-color-alpha($name) {
+  @return var(--#{$name}-a);
+}
+
+/// Returns the `hsl(...)' color expression for a
+/// defined named color.
+///
+/// @param {string} $name The name of the color.
+/// @returns The HSL color expression.
+@function read-color-hsl($name) {
+  @return hsl(
+    read-color-hue($name: $name),
+    read-color-saturation($name: $name),
+    read-color-lightness($name: $name)
+  );
+}
+
+/// Returns the `hsla(...)' color expression for a
+/// defined named color.
+///
+/// @param {string} $name The name of the color.
+/// @returns The HSLA color expression.
+@function read-color-hsla($name) {
+  @return hsla(
+    read-color-hue($name: $name),
+    read-color-saturation($name: $name),
+    read-color-lightness($name: $name),
+    read-color-alpha($name: $name)
+  );
+}
+
+
+/// Maps the HSLA channels of a color into
+/// custom css properties.
+///
+/// @param {string} $name
+/// @param {string|color} $color
+/// @emits The flat CSS properties for the mapping.
+@mixin map-color($name, $color) {
+  @if meta.type-of($name) != string {
+    @error "Parameter $name has unsupported type '#{meta.type-of($name)}'";
+  }
+  @if meta.type-of($color) == color {
+    --#{$name}-h: #{color.hue($color)};
+    --#{$name}-s: #{color.saturation($color)};
+    --#{$name}-l: #{color.lightness($color)};
+    --#{$name}-a: #{color.alpha($color)};
+  } @else if meta.type-of($color) == string {
+    --#{$name}-h: #{read-color-hue($name: $color)};
+    --#{$name}-s: #{read-color-saturation($name: $color)};
+    --#{$name}-l: #{read-color-lightness($name: $color)};
+    --#{$name}-a: #{read-color-alpha($name: $color)};
+  } @else {
+    @error "Parameter $color has unsupported type '#{meta.type-of($color)}'";
+  }
+}
+
+@mixin rules {
+  :root {
+    @each $name, $color in variables.$colors {
+      @include map-color($color: $color, $name: $name);
+    }
+  }
+
+  @each $name, $color in variables.$colors {
+    .bg-#{$name} {
+      background-color: $color;
+      background-color: read-color-hsla($name);
+    }
+  }
+}
