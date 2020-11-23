@@ -1,8 +1,14 @@
 @use 'sass:math';
 
-/**
- *
- */
+/// Adds two values together, or generates a `calc(...)'
+/// expression if the units dont match.
+///
+/// @param {any} $left
+///   The left operand for the addition.
+/// @param {any} $right
+///   The right operand for the addition.
+/// @return {any}
+///   The generated or reduced expression for the addition.
 @function add($left, $right) {
   @if math.compatible($left, $right) {
     @return $left + $right;
@@ -11,9 +17,15 @@
   }
 }
 
-/**
- *
- */
+/// Subtracts two values, or generates a `calc(...)'
+/// expression if the units dont match.
+///
+/// @param {any} $left
+///   The left operand for the subtraction.
+/// @param {any} $right
+///   The right operand for the subtraction.
+/// @return {any}
+///   The generated or reduced expression for the subtraction.
 @function subtract($left, $right) {
   @if math.compatible($left, $right) {
     @return $left - $right;

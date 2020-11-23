@@ -19,21 +19,14 @@
   "style": "dist/css-kit.css",
   "sass": "src/index.scss",
   "scripts": {
-    "build:clean": "rimraf ./dist",
-    "build:compile:debug": "sass ./src/index.scss --embed-source-map | replace 'data:application/json;charset=utf-8,' 'data:application/json,' -z",
-    "build:compile": "sass ./src/index.scss --embed-source-map | replace 'data:application/json;charset=utf-8,' 'data:application/json,' -z | postcss -m -o ./dist/css-kit.css",
-    "build:minify": "postcss ./dist/css-kit.css -m -o ./dist/css-kit.min.css",
-    "build:stats": "dist-size ./dist",
-    "build": "yarn build:clean && yarn build:compile && yarn build:minify && yarn build:stats"
+    "build:clean": "rimraf ./dist/*.css ./dist/*.css.map",
+    "build:compile:main": "sass ./src/index.scss ./dist/css-kit.css --style=expanded",
+    "build:compile:min": "sass ./src/index.scss ./dist/css-kit.min.css --style=compressed",
+    "build:stats": "dist-size ./dist -e css",
+    "build": "yarn build:clean && yarn build:compile:main && yarn build:compile:min && yarn build:stats"
   },
   "devDependencies": {
-    "cssnano": "^4.1.10",
-    "cssnano-preset-advanced": "^4.0.7",
     "dist-size": "^0.4.0",
-    "postcss-cli": "^7.1.2",
-    "postcss-discard-comments": "^4.0.2",
-    "postcss-preset-env": "^6.7.0",
-    "replace": "^1.2.0",
     "rimraf": "^3.0.2",
     "sass": "^1.29.0"
   }
