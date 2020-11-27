@@ -1,0 +1,4 @@
+@use 'src';
+
+// Emit the stylesheet rules
+@include src.rules;

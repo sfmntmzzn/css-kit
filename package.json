@@ -12,16 +12,14 @@
   "files": [
     "dist",
     "src",
-    "LICENSE",
-    "README.md",
-    "package.json"
+    "css-kit.scss"
   ],
   "style": "dist/css-kit.css",
-  "sass": "src/index.scss",
+  "sass": "css-kit.scss",
   "scripts": {
     "build:clean": "rimraf ./dist/",
-    "build:compile:main": "sass ./src/index.scss ./dist/css-kit.css --style=expanded",
-    "build:compile:min": "sass ./src/index.scss ./dist/css-kit.min.css --style=compressed",
+    "build:compile:main": "sass ./css-kit.scss ./dist/css-kit.css --style=expanded",
+    "build:compile:min": "sass ./css-kit.scss ./dist/css-kit.min.css --style=compressed",
     "build:stats": "dist-size ./dist -e css",
     "build": "yarn build:clean && yarn build:compile:main && yarn build:compile:min && yarn build:stats"
   },
