@@ -10,11 +10,13 @@
 @use 'color';
 @use 'reset';
 
-@mixin rules {
+@mixin rules($vendor-prefix: '') {
 
   // Create reset rules
   @include reset.rules;
 
   // Create color rules
-  @include color.rules;
+  @include color.rules(
+    $vendor-prefix: $vendor-prefix
+  );
 }
