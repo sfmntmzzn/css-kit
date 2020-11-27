@@ -121,8 +121,8 @@ $colors: (
   utils.$vendor-prefix: $vendor-prefix;
 
   @at-root {
-  :root {
-    @each $name, $color in $colors {
+    :root {
+      @each $name, $color in $colors {
         #{var-name-hue($name)}: #{color.hue($color)};
         #{var-name-saturation($name)}: #{color.saturation($color)};
         #{var-name-lightness($name)}: #{color.lightness($color)};
@@ -132,7 +132,7 @@ $colors: (
   }
 
   @each $name, $color in $colors {
-    .bg-#{$name} {
+    #{utils.class-name('bg-#{$name}')} {
       background-color: $color;
       background-color: read-color-hsla($name);
     }

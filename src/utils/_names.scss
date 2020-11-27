@@ -2,7 +2,17 @@
 
 $vendor-prefix: '' !default;
 
-/// Generated the name for a variables as acustom
+/// Generates class name for a selector.
+///
+/// @param {string} $name
+///   The base name for the class.
+/// @returns {string}
+///   The generated class name.
+@function class-name($name) {
+  @return '.#{$vendor-prefix}#{$name}';
+}
+
+/// Generates the name for a variables as a custom
 /// CSS property.
 ///
 /// @param {string} $name
@@ -10,5 +20,5 @@ $vendor-prefix: '' !default;
 /// @returns {string}
 ///   The generated variable name.
 @function var-name($name) {
-  @return --#{$vendor-prefix}#{$name};
+  @return '--#{$vendor-prefix}#{$name}';
 }
