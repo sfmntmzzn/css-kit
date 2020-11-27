@@ -5,10 +5,19 @@
 @use 'utils';
 @use 'variables';
 
+/// Variables
 $-css-var-suffix-hue: 'h';
 $-css-var-suffix-saturation: 's';
 $-css-var-suffix-lightness: 'l';
 $-css-var-suffix-alpha: 'a';
+
+/// Theme colors
+$colors: (
+  'primary': blue,
+  'secondary': orange,
+  'text': black,
+  'background': white,
+);
 
 /// Returns the `var(...)' color expression for the
 /// hue channel of a defined named color.
@@ -16,7 +25,7 @@ $-css-var-suffix-alpha: 'a';
 /// @param {string} $name The name of the color.
 /// @returns The custom variable expression.
 @function read-color-hue($name) {
-  @return var(#{utils.css-var($name: $name, $suffix: $-css-var-suffix-hue)});
+  @return var(#{utils.var-name($name: $name, $suffix: $-css-var-suffix-hue)});
 }
 
 /// Returns the `var(...)' color expression for the
@@ -25,7 +34,7 @@ $-css-var-suffix-alpha: 'a';
 /// @param {string} $name The name of the color.
 /// @returns The custom variable expression.
 @function read-color-saturation($name) {
-  @return var(#{utils.css-var($name: $name, $suffix: $-css-var-suffix-saturation)});
+  @return var(#{utils.var-name($name: $name, $suffix: $-css-var-suffix-saturation)});
 }
 
 /// Returns the `var(...)' color expression for the
@@ -34,7 +43,7 @@ $-css-var-suffix-alpha: 'a';
 /// @param {string} $name The name of the color.
 /// @returns The custom variable expression.
 @function read-color-lightness($name) {
-  @return var(#{utils.css-var($name: $name, $suffix: $-css-var-suffix-lightness)});
+  @return var(#{utils.var-name($name: $name, $suffix: $-css-var-suffix-lightness)});
 }
 
 /// Returns the `var(...)' color expression for the
@@ -43,7 +52,7 @@ $-css-var-suffix-alpha: 'a';
 /// @param {string} $name The name of the color.
 /// @returns The custom variable expression.
 @function read-color-alpha($name) {
-  @return var(#{utils.css-var($name: $name, $suffix: $-css-var-suffix-alpha)});
+  @return var(#{utils.var-name($name: $name, $suffix: $-css-var-suffix-alpha)});
 }
 
 /// Returns the `hsl(...)' color expression for a
@@ -85,15 +94,15 @@ $-css-var-suffix-alpha: 'a';
     @error "Parameter $name has unsupported type '#{meta.type-of($name)}'";
   }
   @if meta.type-of($color) == color {
-    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-hue)}: #{color.hue($color)};
-    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-saturation)}: #{color.saturation($color)};
-    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-lightness)}: #{color.lightness($color)};
-    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-alpha)}: #{color.alpha($color)};
+    #{utils.var-name($name: $name, $suffix: $-css-var-suffix-hue)}: #{color.hue($color)};
+    #{utils.var-name($name: $name, $suffix: $-css-var-suffix-saturation)}: #{color.saturation($color)};
+    #{utils.var-name($name: $name, $suffix: $-css-var-suffix-lightness)}: #{color.lightness($color)};
+    #{utils.var-name($name: $name, $suffix: $-css-var-suffix-alpha)}: #{color.alpha($color)};
   } @else if meta.type-of($color) == string {
-    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-hue)}: #{read-color-hue($name: $color)};
-    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-saturation)}: #{read-color-saturation($name: $color)};
-    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-lightness)}: #{read-color-lightness($name: $color)};
-    #{utils.css-var($name: $name, $suffix: $-css-var-suffix-alpha)}: #{read-color-alpha($name: $color)};
+    #{utils.var-name($name: $name, $suffix: $-css-var-suffix-hue)}: #{read-color-hue($name: $color)};
+    #{utils.var-name($name: $name, $suffix: $-css-var-suffix-saturation)}: #{read-color-saturation($name: $color)};
+    #{utils.var-name($name: $name, $suffix: $-css-var-suffix-lightness)}: #{read-color-lightness($name: $color)};
+    #{utils.var-name($name: $name, $suffix: $-css-var-suffix-alpha)}: #{read-color-alpha($name: $color)};
   } @else {
     @error "Parameter $color has unsupported type '#{meta.type-of($color)}'";
   }
@@ -101,12 +110,12 @@ $-css-var-suffix-alpha: 'a';
 
 @mixin rules {
   :root {
-    @each $name, $color in variables.$colors {
+    @each $name, $color in $colors {
       @include map-color($color: $color, $name: $name);
     }
   }
 
-  @each $name, $color in variables.$colors {
+  @each $name, $color in $colors {
     .bg-#{$name} {
       background-color: $color;
       background-color: read-color-hsla($name);

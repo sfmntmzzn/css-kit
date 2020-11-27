@@ -4,6 +4,9 @@
  * Licensed under MIT (https://github.com/sfmntmzzn/css-kit/blob/main/LICENSE)
  */
 
+@forward 'color' as color-*;
+@forward 'reset' as reset-*;
+
 @use 'color';
 @use 'reset';
 
