@@ -12,10 +12,24 @@ $-var-suffix-alpha: '-a';
 
 /// Theme colors
 $colors: (
-  'primary': blue,
-  'secondary': orange,
+  'primary': #f56565,
+  'secondary': #ed8936,
   'text': black,
   'background': white,
+);
+
+/// Color tints
+$-color-tint-step: 10%;
+$color-tints: (
+  '100': (4 * $-color-tint-step),
+  '200': (3 * $-color-tint-step),
+  '300': (2 * $-color-tint-step),
+  '400': (1 * $-color-tint-step),
+  '500': (0 * $-color-tint-step),
+  '600': (-1 * $-color-tint-step),
+  '700': (-2 * $-color-tint-step),
+  '800': (-3 * $-color-tint-step),
+  '900': (-4 * $-color-tint-step)
 );
 
 /// Returns the CSS variable name for the
@@ -141,20 +155,10 @@ $colors: (
       background-color: read-color-hsla($name);
     }
 
-    @each $suffix, $offset in (
-      '100': -24%,
-      '200': -18%,
-      '300': -12%,
-      '400': -6%,
-      '500': 0%,
-      '600': +6%,
-      '700': +12%,
-      '800': +18%,
-      '900': +24%
-    ) {
-      #{utils.class-name('bg-#{$name}-#{$suffix}')} {
-        background-color: color.adjust($color, $lightness: $offset);
-        background-color: read-color-hsla($name, $lightness: $offset);
+    @each $tint-name, $tint-value in $color-tints {
+      #{utils.class-name('bg-#{$name}-#{$tint-name}')} {
+        background-color: color.adjust($color, $lightness: $tint-value);
+        background-color: read-color-hsla($name, $lightness: $tint-value);
       }
     }
   }
