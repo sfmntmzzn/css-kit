@@ -1,4 +1,19 @@
 @use 'sass:math';
+@use 'sass:meta';
+
+/// Remove the unit from a number value
+///
+/// @param {number} $value
+///   The value to strip the value from.
+/// @returns {number}
+///   The value with the unit stripped from it.
+@function -strip-unit($value) {
+  @if meta.type-of($value) == number and not math.is-unitless($value) {
+    @return $value / ($value * 0 + 1);
+  } @else {
+    @return $value;
+  }
+}
 
 /// Adds two values together, or generates a `calc(...)'
 /// expression if the units dont match.
@@ -10,7 +25,11 @@
 /// @return {any}
 ///   The generated or reduced expression for the addition.
 @function add($left, $right) {
-  @if math.compatible($left, $right) {
+  @if meta.type-of($left) == null or -strip-unit($left) == 0 {
+    @return $right;
+  } @else if meta.type-of($right) == null or -strip-unit($right) == 0 {
+    @return $left;
+  } @else if meta.type-of($left) == number and meta.type-of($right) == number and math.compatible($left, $right) {
     @return $left + $right;
   } @else {
     @return calc(#{$left} + #{$right});
@@ -27,7 +46,11 @@
 /// @return {any}
 ///   The generated or reduced expression for the subtraction.
 @function subtract($left, $right) {
-  @if math.compatible($left, $right) {
+  @if meta.type-of($left) == null or -strip-unit($left) == 0 {
+    @return $right;
+  } @else if meta.type-of($right) == null or -strip-unit($right) == 0 {
+    @return $left;
+  } @else if meta.type-of($left) == number and meta.type-of($right) == number and math.compatible($left, $right) {
     @return $left - $right;
   } @else {
     @return calc(#{$left} - #{$right});

@@ -58,36 +58,40 @@ $colors: (
 /// hue channel of a defined named color.
 ///
 /// @param {string} $name The name of the color.
+/// @param {number} $offset A offset to be applied to the value.
 /// @returns The custom variable expression.
-@function read-color-hue($name) {
-  @return var(#{var-name-hue($name)});
+@function read-color-hue($name, $offset: 0deg) {
+  @return utils.add(var(#{var-name-hue($name)}), $offset);
 }
 
 /// Returns the `var(...)' color expression for the
 /// saturation channel of a defined named color.
 ///
 /// @param {string} $name The name of the color.
+/// @param {number} $offset A offset to be applied to the value.
 /// @returns The custom variable expression.
-@function read-color-saturation($name) {
-  @return var(#{var-name-saturation($name)});
+@function read-color-saturation($name, $offset: 0%) {
+  @return utils.add(var(#{var-name-saturation($name)}), $offset);
 }
 
 /// Returns the `var(...)' color expression for the
 /// lightness channel of a defined named color.
 ///
 /// @param {string} $name The name of the color.
+/// @param {number} $offset A offset to be applied to the value.
 /// @returns The custom variable expression.
-@function read-color-lightness($name) {
-  @return var(#{var-name-lightness($name)});
+@function read-color-lightness($name, $offset: 0%) {
+  @return utils.add(var(#{var-name-lightness($name)}), $offset);
 }
 
 /// Returns the `var(...)' color expression for the
 /// alpha channel of a defined named color.
 ///
 /// @param {string} $name The name of the color.
+/// @param {number} $offset A offset to be applied to the value.
 /// @returns The custom variable expression.
-@function read-color-alpha($name) {
-  @return var(#{var-name-alpha($name)});
+@function read-color-alpha($name, $offset: 0) {
+  @return utils.add(var(#{var-name-alpha($name)}), $offset);
 }
 
 /// Returns the `hsl(...)' color expression for a
@@ -95,11 +99,11 @@ $colors: (
 ///
 /// @param {string} $name The name of the color.
 /// @returns The HSL color expression.
-@function read-color-hsl($name) {
+@function read-color-hsl($name, $offset-hue: 0deg, $offset-saturation: 0%, $offset-lightness: 0%) {
   @return hsl(
-    read-color-hue($name),
-    read-color-saturation($name),
-    read-color-lightness($name)
+    read-color-hue($name, $offset: $offset-hue),
+    read-color-saturation($name, $offset: $offset-saturation),
+    read-color-lightness($name, $offset: $offset-lightness)
   );
 }
 
@@ -108,12 +112,12 @@ $colors: (
 ///
 /// @param {string} $name The name of the color.
 /// @returns The HSLA color expression.
-@function read-color-hsla($name) {
+@function read-color-hsla($name, $offset-hue: 0deg, $offset-saturation: 0%, $offset-lightness: 0%, $offset-alpha: 0) {
   @return hsla(
-    read-color-hue($name),
-    read-color-saturation($name),
-    read-color-lightness($name),
-    read-color-alpha($name)
+    read-color-hue($name, $offset: $offset-hue),
+    read-color-saturation($name, $offset: $offset-saturation),
+    read-color-lightness($name, $offset: $offset-lightness),
+    read-color-alpha($name, $offset: $offset-alpha)
   );
 }
 
