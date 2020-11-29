@@ -1,5 +1,7 @@
+@use 'sass:color';
 @use 'sass:math';
 @use 'sass:meta';
+@use 'sass:string';
 
 /// Remove the unit from a number value
 ///
@@ -15,44 +17,70 @@
   }
 }
 
-/// Adds two values together, or generates a `calc(...)'
-/// expression if the units dont match.
+/// Generates or reduces a summation of two values.
 ///
-/// @param {any} $left
-///   The left operand for the addition.
-/// @param {any} $right
-///   The right operand for the addition.
-/// @return {any}
-///   The generated or reduced expression for the addition.
+/// @param {string|number|null} $left
+///   The left operand for the summation.
+/// @param {string|number|null} $right
+///   The right operand for the summation.
+/// @return {string}
+///   The generated or reduced expression for the summation.
 @function add($left, $right) {
-  @if meta.type-of($left) == null or -strip-unit($left) == 0 {
-    @return $right;
-  } @else if meta.type-of($right) == null or -strip-unit($right) == 0 {
-    @return $left;
-  } @else if meta.type-of($left) == number and meta.type-of($right) == number and math.compatible($left, $right) {
-    @return $left + $right;
-  } @else {
-    @return calc(#{$left} + #{$right});
-  }
+  @return string.unquote('#{$left} + #{$right}');
 }
 
-/// Subtracts two values, or generates a `calc(...)'
-/// expression if the units dont match.
+/// Generates or reduces a subtraction two values.
 ///
-/// @param {any} $left
+/// @param {string|number|null} $left
 ///   The left operand for the subtraction.
-/// @param {any} $right
+/// @param {string|number|null} $right
 ///   The right operand for the subtraction.
-/// @return {any}
+/// @return {string}
 ///   The generated or reduced expression for the subtraction.
-@function subtract($left, $right) {
-  @if meta.type-of($left) == null or -strip-unit($left) == 0 {
-    @return $right;
-  } @else if meta.type-of($right) == null or -strip-unit($right) == 0 {
-    @return $left;
-  } @else if meta.type-of($left) == number and meta.type-of($right) == number and math.compatible($left, $right) {
-    @return $left - $right;
+@function sub($left, $right) {
+  @return string.unquote('#{$left} - #{$right}');
+}
+
+/// Generates or reduces a product of two values.
+///
+/// @param {string|number|null} $left
+///   The left operand for the multiplication.
+/// @param {string|number|null} $right
+///   The right operand for the multiplication.
+/// @return {string}
+///   The generated or reduced expression for the product.
+@function mul($left, $right) {
+  @return string.unquote('#{$left} * #{$right}');
+}
+
+/// Generates a `calc(...)' expression for a calculation.
+///
+/// @param {string|number|null} $expression
+///   The expression to calculate.
+/// @return {string|number}
+///   The generated or reduced expression for the calculation.
+@function calculate($expression) {
+  @return string.unquote('calc(#{$expression})');
+}
+
+/// Interpolates between two values.
+///
+/// @param {string|number|color} $base
+///   The base value for the mix operation.
+/// @param {string|number|color} $dest
+///   The destination value for the mix operation.
+/// @param {number} $amount
+///   The amount of `$dest' to mix in.
+/// @return {string|color}
+///   The generated or reduced expression for the mix operation.
+@function lerp($base, $dest, $amount: 50%) {
+  $amount-decimal: $amount;
+  @if math.unit($amount) == '%' {
+    $amount-decimal: $amount / 100%;
+  }
+  @if meta.type-of($base) == color and meta.type-of($dest) == color {
+    @return color.mix($dest, $base, $weight: $amount);
   } @else {
-    @return calc(#{$left} - #{$right});
+    @return calculate(add(mul(1 - $amount-decimal, $base), mul($amount-decimal, $dest)));
   }
 }

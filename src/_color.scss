@@ -10,33 +10,54 @@ $-var-suffix-saturation: '-s';
 $-var-suffix-lightness: '-l';
 $-var-suffix-alpha: '-a';
 
+/// Base Colors
+$base-colors: (
+  'white': hsl(0deg, 0%, 0%),
+  'gray': hsl(0deg, 0%, 50%),
+  'black': hsl(0deg, 0%, 100%),
+  'red': hsl(0deg, 100%, 50%),
+  'yellow': hsl(60deg, 100%, 50%),
+  'green': hsl(120deg, 100%, 50%),
+  'aqua':  hsl(180deg, 100%, 50%),
+  'blue': hsl(240deg, 100%, 50%),
+  'fuchsia': hsl(300deg, 100%, 50%),
+) !default;
+
 /// Theme colors
 $colors: (
-  'primary': #f56565,
-  'secondary': #ed8936,
-  'text': black,
-  'background': white,
-);
+  'primary': purple,
+  'secondary': cyan,
+) !default;
 
 /// Color tints
-$-color-tint-step: 10%;
 $color-tints: (
-  '100': (4 * $-color-tint-step),
-  '200': (3 * $-color-tint-step),
-  '300': (2 * $-color-tint-step),
-  '400': (1 * $-color-tint-step),
-  '500': (0 * $-color-tint-step),
-  '600': (-1 * $-color-tint-step),
-  '700': (-2 * $-color-tint-step),
-  '800': (-3 * $-color-tint-step),
-  '900': (-4 * $-color-tint-step)
+  '100': 80%,
+  '200': 50%,
+  '300': 30%,
+  '400': 15%,
+  '500': 0,
+  '600': -15%,
+  '700': -30%,
+  '800': -50%,
+  '900': -80%
+);
+
+/// All colors combined
+$-all-colors: map.merge(
+  map.merge(
+    ('white': white, 'black': black),
+    $base-colors
+  ),
+  $colors
 );
 
 /// Returns the CSS variable name for the
 /// hue channel of a defined named color.
 ///
-/// @param {string} $name The name of the color.
-/// @returns The variable name.
+/// @param {string} $name
+///   The name of the color.
+/// @returns {string}
+///   The variable name.
 @function var-name-hue($name) {
   @return utils.var-name($name: #{$name}#{$-var-suffix-hue});
 }
@@ -44,8 +65,10 @@ $color-tints: (
 /// Returns the CSS variable name for the
 /// saturation channel of a defined named color.
 ///
-/// @param {string} $name The name of the color.
-/// @returns The variable name.
+/// @param {string} $name
+///   The name of the color.
+/// @returns {string}
+///   The variable name.
 @function var-name-saturation($name) {
   @return utils.var-name($name: #{$name}#{$-var-suffix-saturation});
 }
@@ -53,8 +76,10 @@ $color-tints: (
 /// Returns the CSS variable name for the
 /// lightness channel of a defined named color.
 ///
-/// @param {string} $name The name of the color.
-/// @returns The variable name.
+/// @param {string} $name
+///   The name of the color.
+/// @returns {string}
+///   The variable name.
 @function var-name-lightness($name) {
   @return utils.var-name($name: #{$name}#{$-var-suffix-lightness});
 }
@@ -62,8 +87,10 @@ $color-tints: (
 /// Returns the CSS variable name for the
 /// alpha channel of a defined named color.
 ///
-/// @param {string} $name The name of the color.
-/// @returns The variable name.
+/// @param {string} $name
+///   The name of the color.
+/// @returns {string}
+///   The variable name.
 @function var-name-alpha($name) {
   @return utils.var-name($name: #{$name}#{$-var-suffix-alpha});
 }
@@ -71,68 +98,87 @@ $color-tints: (
 /// Returns the `var(...)' color expression for the
 /// hue channel of a defined named color.
 ///
-/// @param {string} $name The name of the color.
-/// @param {number} $offset A offset to be applied to the value.
-/// @returns The custom variable expression.
-@function read-color-hue($name, $offset: 0deg) {
-  @return utils.add(var(#{var-name-hue($name)}), $offset);
+/// @param {string} $name
+///   The name of the color.
+/// @returns {string}
+///   The custom variable expression.
+@function read-color-hue($name) {
+  @return var(#{var-name-hue($name)});
 }
 
 /// Returns the `var(...)' color expression for the
 /// saturation channel of a defined named color.
 ///
-/// @param {string} $name The name of the color.
-/// @param {number} $offset A offset to be applied to the value.
-/// @returns The custom variable expression.
-@function read-color-saturation($name, $offset: 0%) {
-  @return utils.add(var(#{var-name-saturation($name)}), $offset);
+/// @param {string} $name
+///   The name of the color.
+/// @returns {string}
+///   The custom variable expression.
+@function read-color-saturation($name) {
+  @return var(#{var-name-saturation($name)});
 }
 
 /// Returns the `var(...)' color expression for the
 /// lightness channel of a defined named color.
 ///
-/// @param {string} $name The name of the color.
-/// @param {number} $offset A offset to be applied to the value.
-/// @returns The custom variable expression.
-@function read-color-lightness($name, $offset: 0%) {
-  @return utils.add(var(#{var-name-lightness($name)}), $offset);
+/// @param {string} $name
+///   The name of the color.
+/// @returns {string}
+///   The custom variable expression.
+@function read-color-lightness($name) {
+  @return var(#{var-name-lightness($name)});
 }
 
 /// Returns the `var(...)' color expression for the
 /// alpha channel of a defined named color.
 ///
-/// @param {string} $name The name of the color.
-/// @param {number} $offset A offset to be applied to the value.
-/// @returns The custom variable expression.
-@function read-color-alpha($name, $offset: 0) {
-  @return utils.add(var(#{var-name-alpha($name)}), $offset);
+/// @param {string} $name
+///   The name of the color.
+/// @returns {string}
+///   The custom variable expression.
+@function read-color-alpha($name) {
+  @return var(#{var-name-alpha($name)});
 }
 
 /// Returns the `hsl(...)' color expression for a
 /// defined named color.
 ///
-/// @param {string} $name The name of the color.
-/// @returns The HSL color expression.
-@function read-color-hsl($name, $hue: 0deg, $saturation: 0%, $lightness: 0%) {
-  @return hsl(
-    read-color-hue($name, $offset: $hue),
-    read-color-saturation($name, $offset: $saturation),
-    read-color-lightness($name, $offset: $lightness)
-  );
+/// @param {string} $name
+///   The name of the color.
+/// @param {number} $tint
+///   (Optional) The amount of tint to be applied.
+/// @param {number} $shade
+///   (Optional) The amount of shade to be applied.
+/// @returns {string}
+///   The HSL color expression.
+@function read-color-hsl($name, $tint: null, $shade: null) {
+  $lightness: read-color-lightness($name);
+  @if $tint != null {
+    $lightness: utils.lerp($lightness, color.lightness(map.get($-all-colors, 'white')), $amount: $tint);
+  } @else if $shade != null {
+    $lightness: utils.lerp($lightness, color.lightness(map.get($-all-colors, 'black')), $amount: $shade);
+  }
+  @return hsl(read-color-hue($name), read-color-saturation($name), $lightness);
 }
 
 /// Returns the `hsla(...)' color expression for a
 /// defined named color.
 ///
-/// @param {string} $name The name of the color.
-/// @returns The HSLA color expression.
-@function read-color-hsla($name, $hue: 0deg, $saturation: 0%, $lightness: 0%, $alpha: 0) {
-  @return hsla(
-    read-color-hue($name, $offset: $hue),
-    read-color-saturation($name, $offset: $saturation),
-    read-color-lightness($name, $offset: $lightness),
-    read-color-alpha($name, $offset: $alpha)
-  );
+/// @param {string} $name
+///   The name of the color.
+/// @param {number} $tint
+///   (Optional) The amount of tint to be applied.
+/// @param {number} $shade
+///   (Optional) The amount of shade to be applied.
+/// @returns {string}
+///   The HSLA color expression.
+@function read-color-hsla($name, $tint: null, $shade: null) {
+  $lightness: read-color-lightness($name);
+  @if $tint != null {
+    $lightness: utils.lerp($lightness, color.lightness(map.get($-all-colors, 'white')), $amount: $tint);
+  } @else if $shade != null {
+    $lightness: utils.lerp($lightness, color.lightness(map.get($-all-colors, 'black')), $amount: $shade);
+  }
+  @return hsla(read-color-hue($name), read-color-saturation($name), $lightness, read-color-alpha($name));
 }
 
 @mixin rules($vendor-prefix: '') {
@@ -140,7 +186,7 @@ $color-tints: (
 
   @at-root {
     :root {
-      @each $name, $color in $colors {
+      @each $name, $color in $-all-colors {
         #{var-name-hue($name)}: #{color.hue($color)};
         #{var-name-saturation($name)}: #{color.saturation($color)};
         #{var-name-lightness($name)}: #{color.lightness($color)};
@@ -149,7 +195,7 @@ $color-tints: (
     }
   }
 
-  @each $name, $color in $colors {
+  @each $name, $color in $-all-colors {
     #{utils.class-name('bg-#{$name}')} {
       background-color: $color;
       background-color: read-color-hsla($name);
@@ -157,8 +203,13 @@ $color-tints: (
 
     @each $tint-name, $tint-value in $color-tints {
       #{utils.class-name('bg-#{$name}-#{$tint-name}')} {
-        background-color: color.adjust($color, $lightness: $tint-value);
-        background-color: read-color-hsla($name, $lightness: $tint-value);
+        @if $tint-value >= 0 {
+          background-color: utils.lerp($color, map.get($-all-colors, 'white'), $amount: $tint-value);
+          background-color: read-color-hsla($name, $tint: $tint-value);
+        } @else {
+          background-color: utils.lerp($color, map.get($-all-colors, 'black'), $amount: -1 * $tint-value);
+          background-color: read-color-hsla($name, $shade: -1 * $tint-value);
+        }
       }
     }
   }
