@@ -15,12 +15,12 @@ $base-colors: (
   'white': hsl(0deg, 0%, 0%),
   'gray': hsl(0deg, 0%, 50%),
   'black': hsl(0deg, 0%, 100%),
-  'red': hsl(0deg, 100%, 50%),
-  'yellow': hsl(60deg, 100%, 50%),
-  'green': hsl(120deg, 100%, 50%),
-  'aqua':  hsl(180deg, 100%, 50%),
-  'blue': hsl(240deg, 100%, 50%),
-  'fuchsia': hsl(300deg, 100%, 50%),
+  'red': hsl(-20deg, 75%, 55%),
+  'yellow': hsl(40deg, 85%, 55%),
+  'green': hsl(100deg, 75%, 55%),
+  'aqua':  hsl(160deg, 85%, 55%),
+  'blue': hsl(220deg, 75%, 55%),
+  'fuchsia': hsl(280deg, 85%, 55%),
 ) !default;
 
 /// Theme colors
