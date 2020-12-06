@@ -4,10 +4,10 @@
  * Licensed under MIT (https://github.com/sfmntmzzn/css-kit/blob/main/LICENSE)
  */
 
-@forward 'color' as color-*;
+@forward 'colors' as colors-*;
 @forward 'reset' as reset-*;
 
-@use 'color';
+@use 'colors';
 @use 'reset';
 
 @mixin rules($vendor-prefix: '') {
@@ -16,7 +16,7 @@
   @include reset.rules;
 
   // Create color rules
-  @include color.rules(
+  @include colors.rules(
     $vendor-prefix: $vendor-prefix
   );
 }
