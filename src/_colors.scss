@@ -51,7 +51,6 @@ $all-colors: map.merge(
   ),
   $colors
 );
-@debug $all-colors;
 
 /// Returns the CSS variable name for the
 /// hue channel of a defined named color.
