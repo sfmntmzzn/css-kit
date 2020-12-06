@@ -1,0 +1,32 @@
+@use 'sass:map';
+@use '../utils';
+@use '../colors';
+@use '../utilities';
+
+/// Generate utilities
+@each $name, $color in colors.$all-colors {
+  @include utilities.add-utility('background-#{$name}', (
+    'background': (
+      $color,
+      colors.read-color-hsla($name)
+    )
+  ));
+
+  @each $tint-name, $tint-value in colors.$color-tints {
+    @if $tint-value >= 0 {
+      @include utilities.add-utility('background-#{$name}-#{$tint-name}', (
+        'background': (
+          utils.lerp($color, map.get(colors.$all-colors, 'white'), $amount: $tint-value),
+          colors.read-color-hsla($name, $tint: $tint-value)
+        )
+      ));
+    } @else {
+      @include utilities.add-utility('background-#{$name}-#{$tint-name}', (
+        'background': (
+          utils.lerp($color, map.get(colors.$all-colors, 'black'), $amount: -1 * $tint-value),
+          colors.read-color-hsla($name, $shade: -1 * $tint-value)
+        )
+      ));
+    }
+  }
+}

@@ -1,0 +1,15 @@
+@use 'sass:map';
+@use 'sass:meta';
+
+/// Variables
+$variable-prefix: '' !default;
+
+/// Generates a class name for a utility.
+///
+/// @param {string} $name
+///   The base name for the variable.
+/// @returns {string}
+///   The generated variable name.
+@function variable-name($name) {
+  @return '--#{$variable-prefix}#{$name}';
+}

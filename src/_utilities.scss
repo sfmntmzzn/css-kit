@@ -1,0 +1,46 @@
+@use 'sass:map';
+@use 'sass:meta';
+
+/// Internal variables
+$-utilities: ();
+
+/// Variables
+$class-prefix: '' !default;
+
+/// Generates a class name for a utility.
+///
+/// @param {string} $utility
+///   The name of the utility.
+/// @returns {string}
+///   The generated class name.
+@function class-name($utility) {
+  @return '.#{$class-prefix}#{$utility}';
+}
+
+/// Adds a utility to the utilities map.
+///
+/// @param {string} name
+///   The name for the utility.
+/// @param {map} rules
+///   The style rules for this utility.
+@mixin add-utility($name, $rules: ()) {
+  $-utilities: map.set($-utilities, $name, $rules) !global;
+}
+
+/// Style rules
+@mixin rules {
+
+  @each $name, $rules in $-utilities {
+    #{class-name($name)} {
+      @each $property, $value in $rules {
+        @if meta.type-of($value) == 'list' {
+          @each $value-item in $value {
+            #{$property}: $value-item;
+          }
+        } @else {
+          #{$property}: $value;
+        }
+      }
+    }
+  }
+}

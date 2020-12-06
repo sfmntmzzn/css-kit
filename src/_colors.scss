@@ -2,9 +2,10 @@
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:meta';
+@use 'css-vars';
 @use 'utils';
 
-/// Variables
+/// Internal Variables
 $-var-suffix-hue: '-h';
 $-var-suffix-saturation: '-s';
 $-var-suffix-lightness: '-l';
@@ -12,9 +13,9 @@ $-var-suffix-alpha: '-a';
 
 /// Base Colors
 $base-colors: (
-  'white': hsl(0deg, 0%, 0%),
+  'black': hsl(0deg, 0%, 0%),
   'gray': hsl(0deg, 0%, 50%),
-  'black': hsl(0deg, 0%, 100%),
+  'white': hsl(0deg, 0%, 100%),
   'red': hsl(-20deg, 75%, 55%),
   'yellow': hsl(40deg, 85%, 55%),
   'green': hsl(100deg, 75%, 55%),
@@ -40,16 +41,17 @@ $color-tints: (
   '7': -30%,
   '8': -50%,
   '9': -80%
-);
+) !default;
 
 /// All colors combined
-$-all-colors: map.merge(
+$all-colors: map.merge(
   map.merge(
     ('white': white, 'black': black),
     $base-colors
   ),
   $colors
 );
+@debug $all-colors;
 
 /// Returns the CSS variable name for the
 /// hue channel of a defined named color.
@@ -59,7 +61,7 @@ $-all-colors: map.merge(
 /// @returns {string}
 ///   The variable name.
 @function var-name-hue($name) {
-  @return utils.var-name($name: #{$name}#{$-var-suffix-hue});
+  @return css-vars.variable-name($name: #{$name}#{$-var-suffix-hue});
 }
 
 /// Returns the CSS variable name for the
@@ -70,7 +72,7 @@ $-all-colors: map.merge(
 /// @returns {string}
 ///   The variable name.
 @function var-name-saturation($name) {
-  @return utils.var-name($name: #{$name}#{$-var-suffix-saturation});
+  @return css-vars.variable-name($name: #{$name}#{$-var-suffix-saturation});
 }
 
 /// Returns the CSS variable name for the
@@ -81,7 +83,7 @@ $-all-colors: map.merge(
 /// @returns {string}
 ///   The variable name.
 @function var-name-lightness($name) {
-  @return utils.var-name($name: #{$name}#{$-var-suffix-lightness});
+  @return css-vars.variable-name($name: #{$name}#{$-var-suffix-lightness});
 }
 
 /// Returns the CSS variable name for the
@@ -92,7 +94,7 @@ $-all-colors: map.merge(
 /// @returns {string}
 ///   The variable name.
 @function var-name-alpha($name) {
-  @return utils.var-name($name: #{$name}#{$-var-suffix-alpha});
+  @return css-vars.variable-name($name: #{$name}#{$-var-suffix-alpha});
 }
 
 /// Returns the `var(...)' color expression for the
@@ -153,9 +155,9 @@ $-all-colors: map.merge(
 @function read-color-hsl($name, $tint: null, $shade: null) {
   $lightness: read-color-lightness($name);
   @if $tint != null {
-    $lightness: utils.lerp($lightness, color.lightness(map.get($-all-colors, 'white')), $amount: $tint);
+    $lightness: utils.lerp($lightness, color.lightness(map.get($all-colors, 'white')), $amount: $tint);
   } @else if $shade != null {
-    $lightness: utils.lerp($lightness, color.lightness(map.get($-all-colors, 'black')), $amount: $shade);
+    $lightness: utils.lerp($lightness, color.lightness(map.get($all-colors, 'black')), $amount: $shade);
   }
   @return hsl(read-color-hue($name), read-color-saturation($name), $lightness);
 }
@@ -174,42 +176,23 @@ $-all-colors: map.merge(
 @function read-color-hsla($name, $tint: null, $shade: null) {
   $lightness: read-color-lightness($name);
   @if $tint != null {
-    $lightness: utils.lerp($lightness, color.lightness(map.get($-all-colors, 'white')), $amount: $tint);
+    $lightness: utils.lerp($lightness, color.lightness(map.get($all-colors, 'white')), $amount: $tint);
   } @else if $shade != null {
-    $lightness: utils.lerp($lightness, color.lightness(map.get($-all-colors, 'black')), $amount: $shade);
+    $lightness: utils.lerp($lightness, color.lightness(map.get($all-colors, 'black')), $amount: $shade);
   }
   @return hsla(read-color-hue($name), read-color-saturation($name), $lightness, read-color-alpha($name));
 }
 
-@mixin rules($vendor-prefix: '') {
-  utils.$vendor-prefix: $vendor-prefix;
+/// Style rules
+@mixin rules {
 
   @at-root {
     :root {
-      @each $name, $color in $-all-colors {
+      @each $name, $color in $all-colors {
         #{var-name-hue($name)}: #{color.hue($color)};
         #{var-name-saturation($name)}: #{color.saturation($color)};
         #{var-name-lightness($name)}: #{color.lightness($color)};
         #{var-name-alpha($name)}: #{color.alpha($color)};
-      }
-    }
-  }
-
-  @each $name, $color in $-all-colors {
-    #{utils.class-name('bg-#{$name}')} {
-      background-color: $color;
-      background-color: read-color-hsla($name);
-    }
-
-    @each $tint-name, $tint-value in $color-tints {
-      #{utils.class-name('bg-#{$name}-#{$tint-name}')} {
-        @if $tint-value >= 0 {
-          background-color: utils.lerp($color, map.get($-all-colors, 'white'), $amount: $tint-value);
-          background-color: read-color-hsla($name, $tint: $tint-value);
-        } @else {
-          background-color: utils.lerp($color, map.get($-all-colors, 'black'), $amount: -1 * $tint-value);
-          background-color: read-color-hsla($name, $shade: -1 * $tint-value);
-        }
       }
     }
   }

@@ -4,19 +4,29 @@
  * Licensed under MIT (https://github.com/sfmntmzzn/css-kit/blob/main/LICENSE)
  */
 
-@forward 'colors' as colors-*;
+@forward 'css-vars' as css-vars-*;
+@forward 'utilities' as utilities-*;
 @forward 'reset' as reset-*;
+@forward 'colors' as colors-*;
 
-@use 'colors';
+/// Import modules
+@use 'css-vars';
+@use 'utilities';
 @use 'reset';
+@use 'colors';
 
-@mixin rules($vendor-prefix: '') {
+/// Import utilities
+@use 'utilities/background';
 
-  // Create reset rules
+/// Style rules
+@mixin rules {
+
+  // Emit reset rules
   @include reset.rules;
 
-  // Create color rules
-  @include colors.rules(
-    $vendor-prefix: $vendor-prefix
-  );
+  // Emit color rules
+  @include colors.rules;
+
+  // Emit utility rules
+  @include utilities.rules;
 }
