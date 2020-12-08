@@ -1,0 +1,46 @@
+@use 'sass:map';
+@use '../utils';
+@use '../colors';
+@use '../utilities';
+
+/// Generate utilities
+@each $value in (
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/display
+  // Outside
+  block,
+  inline,
+  run-in,
+  // Inside
+  flow,
+  flow-root,
+  table,
+  flex,
+  grid,
+  ruby,
+  // List Item
+  list-item,
+  // Internal
+  table-row-group,
+  table-header-group,
+  table-footer-group,
+  table-row,
+  table-cell,
+  table-column-group,
+  table-caption,
+  ruby-base,
+  ruby-text,
+  ruby-base-container,
+  ruby-text-container,
+  // Box,
+  contents,
+  none,
+  // Legacy
+  inline-block,
+  inline-table,
+  inline-flex,
+  inline-grid,
+) {
+  @include utilities.add-utility('display-#{$value}', (
+    'display': $value
+  ));
+}
