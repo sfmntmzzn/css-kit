@@ -1,0 +1,23 @@
+@use 'sass:map';
+@use '../utils';
+@use '../colors';
+@use '../utilities';
+
+///
+/// https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction
+///
+
+/// https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction#Values
+$values: (
+  row,
+  row-reverse,
+  column,
+  column-reverse,
+);
+
+/// Generate utilities
+@each $value in $values {
+  @include utilities.add-utility('flex-direction-#{$value}', (
+    'flex-direction': $value
+  ));
+}
