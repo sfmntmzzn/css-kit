@@ -19,6 +19,8 @@
 @use 'utilities/background';
 @use 'utilities/display';
 @use 'utilities/flex-direction';
+@use 'utilities/flex-grow';
+@use 'utilities/flex-shrink';
 
 /// Style rules
 @mixin rules {

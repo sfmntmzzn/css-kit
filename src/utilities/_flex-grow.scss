@@ -1,0 +1,21 @@
+@use '../utilities';
+
+///
+/// https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow
+///
+
+/// https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow#Values
+$numeric-values: (
+  0: 0,
+  1: 0.5,
+  2: 1,
+  3: 1.5,
+  4: 2
+);
+
+/// Generate utilities
+@each $name, $value in $numeric-values {
+  @include utilities.add-utility('flex-grow-#{$name}', (
+    'flex-grow': $value
+  ));
+}
