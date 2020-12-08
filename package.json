@@ -21,7 +21,8 @@
     "build:compile:main": "sass ./css-kit.scss ./dist/css-kit.css --style=expanded",
     "build:compile:min": "sass ./css-kit.scss ./dist/css-kit.min.css --style=compressed",
     "build:stats": "dist-size ./dist -e css",
-    "build": "yarn build:clean && yarn build:compile:main && yarn build:compile:min && yarn build:stats"
+    "build": "yarn build:clean && yarn build:compile:main && yarn build:compile:min && yarn build:stats",
+    "prepack": "yarn build:clean && yarn build:compile:main && yarn build:compile:min"
   },
   "devDependencies": {
     "dist-size": "^0.4.0",
